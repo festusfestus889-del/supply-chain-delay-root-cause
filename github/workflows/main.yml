@@ -1,0 +1,18 @@
+name: Supply Chain Pipeline
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 8 * * *'
+jobs:
+  supply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: pip install -r requirements.txt
+      - run: python src/generate_supply_chain_data.py
+      - run: python src/performance_metrics.py
+      - run: python src/root_cause_analysis.py
+      - run: python src/what_if_simulation.py
