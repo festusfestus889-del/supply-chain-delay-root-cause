@@ -1,0 +1,10 @@
+import streamlit as st, pandas as pd, plotly.express as px
+st.set_page_config(layout="wide")
+st.title("🚚 Supply Chain Delay Root-Cause")
+perf = pd.read_csv("data/processed/carrier_perf.csv")
+drivers = pd.read_csv("data/processed/delay_drivers.csv")
+whatif = pd.read_csv("data/processed/what_if.csv")
+st.metric("Current OTIF", f"{pd.read_csv('data/raw/shipments.csv')['on_time'].mean()*100:.1f}%")
+st.plotly_chart(px.bar(perf, x='carrier', y='otif', title="OTIF by Carrier"))
+st.plotly_chart(px.bar(drivers.head(8), x='importance', y='driver', orientation='h', title="Delay Drivers"))
+st.dataframe(whatif)
